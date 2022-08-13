@@ -29,6 +29,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
+		StringBuilder sb = new StringBuilder();
 		int tc = Integer.parseInt(br.readLine());
 		for(int t = 0;t<tc;t++) {
 			int n = Integer.parseInt(br.readLine());
@@ -50,10 +51,9 @@ public class Main {
 				
 				if(!find(name1).equals(find(name2)))
 					union(name1,name2);
-//				System.out.println(Arrays.toString(parent.entrySet().toArray()));
-//				System.out.println(Arrays.toString(friends.entrySet().toArray()));
-				System.out.println(friends.get(find(name1)));
+				sb.append(friends.get(find(name1))).append("\n");
 			}			
 		}
+		System.out.println(sb);
 	}
 }
