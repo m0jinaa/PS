@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 public class Main {
 	static int[] inOrder;
 	static int[] postOrder;
+	static int[] index;
 	static StringBuilder sb = new StringBuilder();
 	static void preOrder(int i_start,int i_end,int p_start,int p_end) {
 		//System.out.println(i_start+ " "+i_end+ " "+p_start+ " "+p_end);
@@ -14,16 +15,11 @@ public class Main {
 		
 		int p = postOrder[p_end];
 		sb.append(p).append(" ");
-		//System.out.println(p);
-		int ind = 0;
-		for(int i = i_start;i<=i_end;i++) {
-			if(inOrder[i] == p) {
-				ind = i;
-				break;
-			}
-		}
+		int ind = index[p];
+
 		preOrder(i_start,ind-1,p_start,p_start+(ind-1-i_start));
-		preOrder(ind+1,i_end,p_start+(ind-i_start),p_end-1);	
+		preOrder(ind+1,i_end,p_start+(ind-i_start),p_end-1);
+	
 	}
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
@@ -33,18 +29,19 @@ public class Main {
 		int n = Integer.parseInt(br.readLine());
 		inOrder = new int[n];
 		postOrder = new int[n];
+		index = new int[n+1];
 		st = new StringTokenizer(br.readLine()," ");
 		for(int i = 0;i<n;i++) {
 			inOrder[i] = Integer.parseInt(st.nextToken());
+			index[inOrder[i]] = i;
 		}
 
 		st = new StringTokenizer(br.readLine()," ");
 		for(int i = 0;i<n;i++) {
 			postOrder[i] = Integer.parseInt(st.nextToken());
 		}
-	
 		preOrder(0,n-1,0,n-1);
 		
 		System.out.println(sb);
-    }
+	}
 }
