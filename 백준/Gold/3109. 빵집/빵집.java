@@ -4,16 +4,18 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	public static boolean getPath(char[][] g, int a,int b,int[][] v) {
-		if(0>a ||a>=g.length||v[a][b] == 1||v[a][b] == -1)
+	static int[][] v;
+	static char[][] map;
+	public static boolean getPath(int a,int b) {
+		if(0>a ||a>=map.length||v[a][b] == 1||v[a][b] == -1)
 			return false;
-		else if(0<=a && a<g.length&&0<=b&&b<g[0].length&&g[a][b] == '.') {
-			if(b==g[0].length-1) {
+		else if(0<=a && a<map.length&&0<=b&&b<map[0].length&&map[a][b] == '.') {
+			if(b==map[0].length-1) {
 				v[a][b] = 1;
 				return true;
 			}
 			else{
-				if(getPath(g,a-1,b+1,v) ||getPath(g,a,b+1,v) ||getPath(g,a+1,b+1,v)) {
+				if(getPath(a-1,b+1) ||getPath(a,b+1) ||getPath(a+1,b+1)) {
 					v[a][b] = 1;
 					return true;
 				}
@@ -33,14 +35,14 @@ public class Main {
 		int r = Integer.parseInt(st.nextToken());
 		int c = Integer.parseInt(st.nextToken());
 		
-		char[][] map = new char[r][c];
+		map = new char[r][];
 		for(int i = 0;i<r;i++) {
 			map[i] = br.readLine().toCharArray();
 		}
-		int[][] v = new int[r][c];
+		v = new int[r][c];
 		int answer = 0;
 		for(int i = 0;i<r;i++) {
-			if(getPath(map,i,0,v))
+			if(getPath(i,0))
 				answer++;
 		}
 		System.out.println(answer);
