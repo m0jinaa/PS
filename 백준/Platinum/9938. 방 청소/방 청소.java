@@ -28,12 +28,12 @@ public class Main {
 			root[i] = i;
 		}
 		int a,b;
-		boolean pos;
+		String answer;
 		for(int i = 0;i<n;i++) {
 			st = new StringTokenizer(br.readLine()," ");
 			a = Integer.parseInt(st.nextToken());
 			b = Integer.parseInt(st.nextToken());
-			pos = true;
+			answer = "LADICA";
 			if(!filled[a]) {//a에 넣을 수 있는지 확인
 				filled[a] = true;
 				union(a,b);
@@ -51,14 +51,9 @@ public class Main {
 				union(b,a);
 			}
 			else {
-				pos = false;
+				answer = "SMECE";
 			}
-			if(pos) {
-				sb.append("LADICA").append("\n");
-			}
-			else {
-				sb.append("SMECE").append("\n");
-			}			
+			sb.append(answer).append("\n");
 		}
 		System.out.print(sb);
 	}
