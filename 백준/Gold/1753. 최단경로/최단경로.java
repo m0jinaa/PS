@@ -1,3 +1,4 @@
+//다익스트라
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,11 +18,9 @@ public class Main {
 		int e = Integer.parseInt(st.nextToken());
 		int start = Integer.parseInt(br.readLine());
 		int[] dist = new int[v+1];
-		boolean[] visit = new boolean[v+1];
 		int max = v*10+1;
 		Arrays.fill(dist, max);
 		dist[start] = 0;
-		visit[start]= true;
 		ArrayList<int[]>[] graph = new ArrayList[v+1];
 		for(int i = 1;i<=v;i++) {
 			graph[i] = new ArrayList<int[]>();
