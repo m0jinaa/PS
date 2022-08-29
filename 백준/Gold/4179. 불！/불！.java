@@ -1,105 +1,133 @@
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
-class Pair{
-	int a;
-	int b;
-	int cnt;
-	public Pair(int a, int b, int cnt) {
-		this.a = a;
-		this.b = b;
-		this.cnt = cnt;
-	}	
-}
 public class Main {
-	static int[] dx = {0,0,1,-1};
-	static int[] dy = {1,-1,0,0};
+
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringBuilder sb = new StringBuilder();
+	static StringTokenizer st;
+	static int R, C, time;
+	static char[][] map;
+	static int dr[] = { -1,  0,  1,  0 };
+	static int dc[] = {  0,  1,  0, -1 };
+	static boolean[][] visitedJ;
+	static boolean[][] visitedF;
+	static Queue<Pos> jihun = new LinkedList<Pos>();
+	static Queue<Pos> fire  = new LinkedList<Pos>();
 	
-	static void fireExtend(LinkedList<Point> f, char[][] g,Point p) {
-		int a = p.x;
-		int b = p.y;
-		for(int i = 0;i<4;i++) {
-			int x = a+dx[i];
-			int y = b+dy[i];
-			if(0<=x&&x<g.length&&0<=y&&y<g[0].length) {
-				if(g[x][y] == '.' ||g[x][y] == 'J') {
-					g[x][y] = 'F';
-					f.add(new Point(x,y));
-				}				
-			}
-		}
-		
-	}
-	static int wayOut(LinkedList<Pair> q, char[][] g,Pair p) {
-		int a = p.a;
-		int b = p.b;
-		int c = p.cnt;
-		for(int i = 0;i<4;i++) {
-			int x = a+dx[i];
-			int y = b+dy[i];
-			if(0<=x&&x<g.length&&0<=y&&y<g[0].length) {
-				if(g[x][y]=='.') {
-					g[x][y] = 'J';
-					q.add(new Pair(x,y,c+1));
-				}
-			}
-			else {
-				return c+1;
-			}
-		}
-		return -1;
-	}
 	public static void main(String[] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int r = Integer.parseInt(st.nextToken());
-		int c = Integer.parseInt(st.nextToken());
 		
-		char[][] map = new char[r][c];
-		LinkedList<Pair> person = new LinkedList<Pair>();
-		LinkedList<Point> fire = new LinkedList<Point>();
+		st = new StringTokenizer(br.readLine(), " ");
+		R = Integer.parseInt(st.nextToken());
+		C = Integer.parseInt(st.nextToken());
+		map = new char[R][C];
+		visitedJ = new boolean[R][C];
+		visitedF = new boolean[R][C];
+		for (int i = 0; i < R; i++) {
+			map[i] = br.readLine().toCharArray();
+		} // 입력 끝
 		
-		for(int i = 0;i<r;i++) {
-			String s = br.readLine();
-			for(int j = 0;j<c;j++) {
-				char chr = s.charAt(j);
-				switch(chr) {
-				case 'J':
-					person.add(new Pair(i,j,0));
-					break;
-				case 'F':
-					fire.add(new Point(i,j));
-					break;
+		for (int i = 0; i < R; i++) {
+			for (int j = 0; j < C; j++) {
+				if(map[i][j] == 'F') {
+					visitedF[i][j] = true;
+					fire.offer(new Pos(i, j));
 				}
-				map[i][j] = chr;
-			}
-		}
-		
-		int answer = -1;
-		
-		out:while(true) {
-			int fsize = fire.size();
-			for(int i = 0;i<fsize;i++) {
-				fireExtend(fire,map,fire.pollFirst());				
-			}
-			int psize = person.size();
-			for(int i = 0;i<psize;i++) {
-				answer = wayOut(person,map,person.pollFirst());
-				if(answer!=-1) {
-					break out;
+				else if(map[i][j] == 'J') {
+					visitedJ[i][j] = true;
+					jihun.offer(new Pos(i, j));
 				}
 			}
-			if(person.isEmpty())
-				break;
 		}
-		if(answer!=-1){
-			System.out.println(answer);
-		}
-		else
-			System.out.println("IMPOSSIBLE");	
+		
+		bfs();
+		
 	}
+	
+	static void bfs() {
+		
+		while(true) {
+			
+			time++;
+			
+			int sizeJ = jihun.size();
+			
+			if(sizeJ == 0) {
+				
+				System.out.println("IMPOSSIBLE");
+				return;
+				
+			}
+			
+			while(sizeJ-- > 0) {
+				
+				Pos now = jihun.poll();
+				
+				if(map[now.row][now.col] == 'F') continue;
+				if(now.row == 0 || now.row == R - 1 || now.col == 0 || now.col == C - 1) {
+					System.out.println(time);
+					return;		
+				}
+				
+				for (int i = 0; i < 4; i++) {
+					
+					int nr = now.row + dr[i];
+					int nc = now.col + dc[i];
+					
+					if(0 <= nr && nr < R && 0 <= nc && nc < C && !visitedJ[nr][nc] && map[nr][nc] == '.') {
+						
+						
+						visitedJ[nr][nc] = true;
+						jihun.offer(new Pos(nr, nc));
+						
+					}
+					
+				}
+				
+			}
+			
+			int sizeF = fire.size();
+			
+			while(sizeF-- > 0) {
+				
+				Pos now = fire.poll();
+				
+				for (int i = 0; i < 4; i++) {
+					
+					int nr = now.row + dr[i];
+					int nc = now.col + dc[i];
+					
+					if(0 <= nr && nr < R && 0 <= nc && nc < C && !visitedF[nr][nc] && map[nr][nc] != '#') {
+						
+						visitedF[nr][nc] = true;
+						map[nr][nc] = 'F';
+						fire.offer(new Pos(nr, nc));
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
+	static class Pos {
+		
+		int row, col;
+		
+		public Pos(int row, int col) {
+
+			this.row = row;
+			this.col = col;
+			
+		}
+		
+	}
+	
 }
