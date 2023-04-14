@@ -8,13 +8,14 @@ public class Main {
 	static boolean[] done;
 	static int[] work;
 	static ArrayList<Integer>[] canDo;
-	
+	static boolean[] v;
 	static boolean dfs(int x) {
+		v[x] = true;
 		for(int i: canDo[x]) {
 			if(done[i])
 				continue;
 			done[i] = true;
-			if(work[i]==0 || dfs(work[i])) {
+			if(work[i]==0 || (!v[work[i]] && dfs(work[i]))) {
 				work[i] = x;
 				return true;
 			}
@@ -28,13 +29,15 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken());
 		int m = Integer.parseInt(st.nextToken());
 
-		canDo = new ArrayList[n + 1];
-
+		canDo = new ArrayList[2*n+1];
+		v = new boolean[2*n+1];
 		work = new int[m + 1];
 		done = new boolean[m + 1];
-
+		
 		for (int i = 1; i <= n; i++) {
-			canDo[i] = new ArrayList<Integer>();
+			canDo[i*2-1] = new ArrayList<Integer>();
+			canDo[i*2] = new ArrayList<Integer>();
+			
 		}
 
 		int c, x;
@@ -44,22 +47,20 @@ public class Main {
 
 			while (c-- > 0) {
 				x = Integer.parseInt(st.nextToken());
-				canDo[i].add(x);
+				canDo[2*i-1].add(x);
+				canDo[2*i].add(x);
 			}
 		}
 
-		int cnt;
 		int answer = 0;
-		for (int i = 1; i <= n; i++) {
-			cnt = 2;
-			while (cnt-- > 0) {
-				Arrays.fill(done, false);
-				if (dfs(i)) {
-					answer++;
-				}
+		for (int i = 1; i <= 2*n; i++) {
+			Arrays.fill(done, false);
+			if (dfs(i)) {
+				Arrays.fill(v, false);
+				answer++;
 			}
 		}
-        
 		System.out.println(answer);
+
 	}
 }
