@@ -1,2 +1,3 @@
 # PS
-This is a auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
+
+백준(BOJ), SWEA, 프로그래머스에서 해결한 문제의 코드가 자동으로 업로드됩니다.
