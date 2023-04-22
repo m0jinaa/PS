@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Main{
 	static long[][] E,V;
 	static final int MOD = 1_000_000_007;
 	static int l;
@@ -16,8 +16,8 @@ public class Main {
 				V[i][j] = 1;
 			}
 		}
-
 	}
+    
 	static long[][] mult(long[][] a, long[][] b){
 		long[][] c = new long[l][l];
 		
@@ -26,8 +26,7 @@ public class Main {
 				for(int j = 0;j<l;j++) {
 					c[i][j] = (c[i][j]+a[i][k]*b[k][j])%MOD;
 				}
-			}
-			
+			}		
 		}
 		return c;
 	}
@@ -44,11 +43,7 @@ public class Main {
 			i<<=1;
 		}
 		
-		long ans = 0;
-		for(int j = 0;j<l;j++) {
-			ans = (ans + answer[l-1][j])%MOD;
-		}
-		return ans;
+		return answer[l-1][0];
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -58,6 +53,6 @@ public class Main {
 			long x = Long.parseLong(st.nextToken());
 			init();
         
-			System.out.println(fibo(x-1));	
+			System.out.println(fibo(x));		
 	}
 }
