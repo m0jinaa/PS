@@ -1,58 +1,37 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 
-public class Main{
-	static int[] order;
-	static HashSet<Integer>[] graph;
-	static int n;
-	static boolean check(int x) {
-		int y;
+public class Main {
+	static int[] order,target;
+	static ArrayList<Integer>[] graph;
+	static int ind = 0;
+	static boolean[] v;
+	static boolean dfs(int x) {
+		if(target[ind++]!=x)
+			return false;
 		
-		int ind = 1;
-		Stack<Integer> v = new Stack<>();
-		int now = x;
-		v.add(now);
-		boolean answer = true;
-		while(ind<n) {
-			y = order[ind];
-			if(graph[now].isEmpty()) {
-				if(!v.isEmpty()) {
-					now = v.pop();
-				}
-				else {
-					answer = false;
-					break;
-				}
-			}
-			else if(graph[now].contains(y)) {
-				graph[now].remove(y);
-				graph[y].remove(now);
-				v.add(now);
-				now = y;
-				ind++;
-			}
-			else {
-				answer = false;
-				break;
-			}
+		for(int y: graph[x]) {
+			if(v[y])
+				continue;
+			v[y] = true;
+			return dfs(y);
 		}
-		
-		return answer;
-		
+		return true;
 	}
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		
-		n = Integer.parseInt(br.readLine());
+		int n = Integer.parseInt(br.readLine());
 		
-		graph = new HashSet[n+1];
+		graph = new ArrayList[n+1];
 		
 		for(int i = 1;i<=n;i++) {
-			graph[i] = new HashSet<Integer>();
+			graph[i] = new ArrayList<Integer>();
 		}
 		
 		int a,b;
@@ -65,21 +44,25 @@ public class Main{
 			graph[b].add(a);
 		}
 		
-		order = new int[n];
-		
+		order = new int[n+1];
+		target = new int[n];
+		v = new boolean[n+1];
 		st = new StringTokenizer(br.readLine()," ");
 		
 		for(int i = 0;i<n;i++) {
-			order[i] = Integer.parseInt(st.nextToken());
+			target[i] = Integer.parseInt(st.nextToken());
+			order[target[i]] = i;
 		}
-		if(order[0]!=1) {
-			System.out.println(0);
-		}
-		else if(check(1)) {
-			System.out.println(1);
-		}
-		else {
-			System.out.println(0);
-		}
+		for(int i = 1;i<=n;i++)
+			Collections.sort(graph[i],new Comparator<Integer>() {
+
+				@Override
+				public int compare(Integer o1, Integer o2) {
+					return order[o1]-order[o2];
+				}});
+		
+		v[1] = true;
+		
+		System.out.println(dfs(1)?1:0);
 	}
 }
