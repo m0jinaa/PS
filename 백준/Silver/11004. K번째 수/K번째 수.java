@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -13,17 +13,24 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken());
 		int k = Integer.parseInt(st.nextToken());
 
-		ArrayList<Integer> list = new ArrayList<>();
+		PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
 
 		st = new StringTokenizer(br.readLine(), " ");
+
+		for (int i = 0; i < k; i++) {
+			pq.add(Integer.parseInt(st.nextToken()));
+		}
 		int x;
-		while (n-- > 0) {
+		
+		for(int i = k;i<n;i++) {
 			x = Integer.parseInt(st.nextToken());
-			list.add(x);
+			if(pq.peek()<=x) {
+				continue;
+			}
+			pq.poll();
+			pq.add(x);
 		}
 		
-		Collections.sort(list);
-		
-		System.out.println(list.get(k-1));
+		System.out.println(pq.peek());
 	}
 }
