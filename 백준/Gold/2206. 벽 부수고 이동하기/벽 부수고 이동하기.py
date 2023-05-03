@@ -12,10 +12,13 @@ q.append([0,0,1,0])#x,y,flag
 
 dx = [0,0,1,-1]
 dy = [1,-1,0,0]
-
+answer = -1
 v[0][0][0] = 1
 while q:
     a,b,c,f = q.popleft()
+    if a==n-1 and b==m-1:
+        answer = c;
+        break
     #print(a,b,c,f)
     for i in range(4):
         x = a+dx[i]
@@ -28,7 +31,4 @@ while q:
             elif g[x][y] == 1 and v[x][y][f] > c+1  and f == 0:
                 v[x][y][f] = c+1
                 q.append([x,y,c+1,1])
-if min(v[-1][-1]) == inf:
-    print(-1)
-else:
-    print(min(v[-1][-1]))
+print(answer)
