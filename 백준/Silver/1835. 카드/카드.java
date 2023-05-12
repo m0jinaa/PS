@@ -1,7 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class Main{
+public class Main {
 	static class Deque {
 		int n;
 		int front, rear;
@@ -35,7 +35,8 @@ public class Main{
 		}
 		
 		public int size() {
-			return (n+rear-front)%n;
+			int s = rear-front;
+			return s<0?s+n:s;
 		}
 
 	}
@@ -50,9 +51,10 @@ public class Main{
 		
 		int[] answer = new int[n];
 		int ind;
-		int x = 1;
+		int t, x = 1;
 		while(!q.isEmpty()) {
-			for(int i = 0;i<x;i++) {
+			t = x%q.size();
+			for(int i = 0;i<t;i++) {
 				q.push(q.poll());
 			}
 			ind = q.poll();
@@ -64,5 +66,6 @@ public class Main{
 		}
 		
 		System.out.println(sb.toString());
+
 	}
 }
