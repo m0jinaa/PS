@@ -1,13 +1,15 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
 	static int n, m;
 	static int[][] map;
-	static LinkedList<Loc> list;
+	static ArrayList<Loc> list;
 	static boolean[][] v;
 	static int answer = 0;
 	static int[] dx = new int[] { 1, -1, 0, 0 }, dy = new int[] { 0, 0, 1, -1 };
@@ -20,7 +22,6 @@ public class Main {
 			this.x = x;
 			this.y = y;
 		}
-
 	}
 
 	static boolean inRange(int a, int b) {
@@ -30,7 +31,7 @@ public class Main {
 	}
 
 	static int bfs(int x, int y) {
-		LinkedList<Loc> q = new LinkedList<>();
+		Queue<Loc> q = new LinkedList<>();
 		int cnt = 1;
 		boolean empty = false;
 		v[x][y] = true;
@@ -74,10 +75,8 @@ public class Main {
 				}
 			}
 		}
-		
 
 		answer = Math.max(answer, total);
-
 	}
 
 	static void combi(int ind, int cnt) {
@@ -107,7 +106,7 @@ public class Main {
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
 
-		list = new LinkedList<>();
+		list = new ArrayList<>();
 
 		map = new int[n][m];
 		v = new boolean[n][m];
