@@ -24,12 +24,6 @@ public class Main {
 		}
 	}
 
-	static boolean inRange(int a, int b) {
-		if (a < 0 || a >= n || b < 0 || b >= m)
-			return false;
-		return true;
-	}
-
 	static int bfs(int x, int y) {
 		Queue<Loc> q = new LinkedList<>();
 		int cnt = 1;
@@ -46,7 +40,7 @@ public class Main {
 			for (int i = 0; i < 4; i++) {
 				nx = now.x + dx[i];
 				ny = now.y + dy[i];
-				if (!inRange(nx, ny) || v[nx][ny] || map[nx][ny] == 1)
+				if (v[nx][ny] || map[nx][ny] == 1)
 					continue;
 				if (map[nx][ny] == 0) {
 					empty = true;
@@ -62,20 +56,20 @@ public class Main {
 	}
 
 	static void check() {
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i <= n+1; i++) {
 			Arrays.fill(v[i], false);
 		}
-		
+
 		int total = 0;
 
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
 				if (map[i][j] == 2 && !v[i][j]) {
 					total += bfs(i, j);
 				}
 			}
 		}
-
+		
 		answer = Math.max(answer, total);
 	}
 
@@ -108,20 +102,22 @@ public class Main {
 
 		list = new ArrayList<>();
 
-		map = new int[n][m];
-		v = new boolean[n][m];
+		map = new int[n + 2][m + 2];
+		v = new boolean[n + 2][m + 2];
 
-		for (int i = 0; i < n; i++) {
+		for (int i = 1; i <= n; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
-
-			for (int j = 0; j < m; j++) {
+			Arrays.fill(map[i], 1);
+			for (int j = 1; j <= m; j++) {
 				map[i][j] = Integer.parseInt(st.nextToken());
 				if (map[i][j] == 0) {
 					list.add(new Loc(i, j));
 				}
 			}
 		}
-
+		Arrays.fill(map[0], 1);
+		Arrays.fill(map[n + 1], 1);
+		
 		combi(0, 0);
 
 		System.out.println(answer);
