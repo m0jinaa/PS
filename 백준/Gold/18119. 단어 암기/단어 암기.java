@@ -11,7 +11,7 @@ public class Main {
 
 		int n = Integer.parseInt(st.nextToken());
 		int m = Integer.parseInt(st.nextToken());
-
+		int max = (1 << 26) - 1;
 		int[] words = new int[n];
 		int x;
 		char[] word;
@@ -20,11 +20,13 @@ public class Main {
 			word = br.readLine().toCharArray();
 			for (char c : word) {
 				x |= (1 << (c - 'a'));
+				if (x == max)
+					break;
 			}
 			words[i] = x;
 		}
 
-		int status = (1 << 26) - 1;
+		int status = max;
 		int o, cnt;
 		while (m-- > 0) {
 			st = new StringTokenizer(br.readLine(), " ");
