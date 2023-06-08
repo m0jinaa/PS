@@ -27,55 +27,43 @@ public class Main {
 		char[][] map = new char[r][];
 		boolean[][] v = new boolean[r][c];
 
-		LinkedList<Point> q = new LinkedList<>();
+		int nx, ny;
 
 		for (int i = 0; i < r; i++) {
 			map[i] = br.readLine().toCharArray();
-			for (int j = 0; j < c; j++) {
-				if (map[i][j] == 'W') {
-					q.add(new Point(i, j));
-					v[i][j] = true;
-				}
-			}
 		}
 		boolean canGo = false;
-		int nx, ny;
-		Point now;
-		end: while (!q.isEmpty()) {
-			now = q.poll();
-
-			for (int i = 0; i < 4; i++) {
-				nx = now.x + dx[i];
-				ny = now.y + dy[i];
-				if (!inRange(nx, ny) || v[nx][ny] || map[nx][ny] == 'D')
-					continue;
-				if (map[nx][ny] == 'S') {
-					if (map[now.x][now.y] == 'W') {
-						canGo = true;
-						break end;
+		end: for (int i = 0; i < r; i++) {
+			for (int j = 0; j < c; j++) {
+				if (map[i][j] == 'W') {
+					for (int k = 0; k < 4; k++) {
+						nx = i + dx[k];
+						ny = j + dy[k];
+						if (!inRange(nx, ny) || map[nx][ny] == 'D' || map[nx][ny] == 'W')
+							continue;
+						if (map[nx][ny] == 'S') {
+							canGo = true;
+							break end;
+						} else {
+							map[nx][ny] = 'D';
+						}
 					}
-					map[now.x][now.y] = 'D';
-				} else {
-					v[nx][ny] = true;
-					q.add(new Point(nx, ny));
 				}
 			}
 		}
-		
-		if(canGo) {
-			sb.append(0).append("\n");
-		}
-		else {
-			sb.append(1).append("\n");
-			
-			for(int i = 0;i<r;i++) {
-				for(int j = 0;j<c;j++) {
-					sb.append(map[i][j]);
+
+		if (canGo) {
+			sb.append("0\n");
+		} else {
+			sb.append("1\n");
+			for (char[] row : map) {
+				for (char m : row) {
+					sb.append(m);
 				}
 				sb.append("\n");
 			}
 		}
-		
+
 		System.out.print(sb.toString());
 	}
 }
