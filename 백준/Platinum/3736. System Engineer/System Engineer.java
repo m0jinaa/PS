@@ -26,8 +26,10 @@ public class Main{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
+        
 		String input;
 		int n, ind, c, x, answer;
+        
 		while ((input = br.readLine()) != null && !input.isEmpty()) {
 			n = Integer.parseInt(input);
 			
@@ -63,7 +65,7 @@ public class Main{
 			
 			sb.append(answer).append("\n");
 		}
+        
 		System.out.println(sb.toString());
 	}
-
 }
