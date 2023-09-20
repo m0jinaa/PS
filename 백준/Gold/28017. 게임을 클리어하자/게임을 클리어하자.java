@@ -15,26 +15,28 @@ public class Main {
 		int m = Integer.parseInt(st.nextToken());
 
 		final int INF = 5000001;
+		int[][] nums = new int[n + 1][m];
 
 		int[][] dp = new int[n + 1][m];
+
+		for (int i = 1; i <= n; i++) {
+			st = new StringTokenizer(br.readLine(), " ");
+			for (int j = 0; j < m; j++) {
+				nums[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
 
 		for (int i = 1; i <= n; i++) {
 			Arrays.fill(dp[i], INF);
 		}
 
-		int x;
-
 		for (int i = 1; i <= n; i++) {
-			st = new StringTokenizer(br.readLine(), " ");
-
 			for (int j = 0; j < m; j++) {
-				x = Integer.parseInt(st.nextToken());
-
 				for (int k = 0; k < m; k++) {
 					if (j == k)
 						continue;
 
-					dp[i][j] = Math.min(dp[i][j], dp[i - 1][k] + x);
+					dp[i][j] = Math.min(dp[i][j], dp[i - 1][k] + nums[i][j]);
 				}
 			}
 		}
