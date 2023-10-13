@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 	static int[] psum;
-	static int n, m, x;
+	static int n, m, total;
 	static Box[] boxes;
 	static int[] dp;
 	static final int INF = 1_000_000_007;
@@ -25,18 +25,20 @@ public class Main {
 		dp[0] = 0;
 
 		for (Box b : boxes) {
-			for (int i = x; i > 0; i--) {
-				for (int j = 1; j <= b.c && j <= i; j++) {
-					dp[i] = Math.min(dp[i], dp[i - j] + b.e);
+			for (int i = m; i >= 0; i--) {
+				if (dp[i] > dp[Math.max(i - b.c, 0)] + b.e) {
+					dp[i] = dp[Math.max(i - b.c, 0)] + b.e;
 				}
 			}
 		}
 
 		int answer = 0;
-		for (int i = 0; i <= x; i++) {
-			answer = Math.max(answer, psum[i] - dp[i]);
-		}
 
+		for (int i = 0; i <= m; ++i) {
+			if (answer < psum[i] - dp[i]) {
+				answer = psum[i] - dp[i];
+			}
+		}
 		return answer;
 	}
 
@@ -68,20 +70,16 @@ public class Main {
 		boxes = new Box[n];
 
 		int c, e;
-		int total = 0;
 
 		for (int i = 0; i < n; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
 
 			c = Integer.parseInt(st.nextToken());
 			e = Integer.parseInt(st.nextToken());
-			total += c;
 			boxes[i] = new Box(c, e);
 		}
 
-		x = Math.min(m, total);
-
-		dp = new int[x + 1];
+		dp = new int[m + 1];
 
 		Arrays.fill(dp, INF);
 
