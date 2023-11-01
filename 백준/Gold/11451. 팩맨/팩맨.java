@@ -51,32 +51,10 @@ public class Main {
 			}
 
 			for (int i = 0; i < 4; i++) {
-				int nx1 = temp.a.x + dx[i];
-				int ny1 = temp.a.y + dy[i];
-				int nx2 = temp.b.x + dx[i];
-				int ny2 = temp.b.y + dy[i];
-
-				if (nx1 < 0 || nx1 >= n || ny1 < 0 || ny1 >= m) {
-					if (nx1 < 0)
-						nx1 = n - 1;
-					else if (nx1 >= n)
-						nx1 = 0;
-					else if (ny1 < 0)
-						ny1 = m - 1;
-					else
-						ny1 = 0;
-				}
-
-				if (nx2 < 0 || nx2 >= n || ny2 < 0 || ny2 >= m) {
-					if (nx2 < 0)
-						nx2 = n - 1;
-					else if (nx2 >= n)
-						nx2 = 0;
-					else if (ny2 < 0)
-						ny2 = m - 1;
-					else
-						ny2 = 0;
-				}
+				int nx1 = (temp.a.x + dx[i] + n) % n;
+				int ny1 = (temp.a.y + dy[i] + m) % m;
+				int nx2 = (temp.b.x + dx[i] + n) % n;
+				int ny2 = (temp.b.y + dy[i] + m) % m;
 
 				if (map[nx1][ny1] == 'X') {
 					nx1 = temp.a.x;
