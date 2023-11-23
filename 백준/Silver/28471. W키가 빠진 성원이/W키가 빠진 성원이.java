@@ -8,8 +8,6 @@ public class Main {
 	static int[] dx = new int[] { -1, -1, -1, 0, 1, 1, 0 };
 	static int[] dy = new int[] { -1, 0, 1, 1, 1, -1, -1 };
 
-	static boolean[][] v;
-
 	static char[][] map;
 
 	static class Node {
@@ -32,9 +30,8 @@ public class Main {
 		LinkedList<Node> q = new LinkedList<>();
 
 		q.add(new Node(x, y));
-		v[x][y] = true;
 		int cnt = 0;
-
+		map[x][y] = '#';
 		Node now;
 		int nx, ny;
 
@@ -45,10 +42,9 @@ public class Main {
 				nx = now.x + dx[i];
 				ny = now.y + dy[i];
 
-				if (!inRange(nx, ny) || map[nx][ny] == '#' || v[nx][ny])
+				if (!inRange(nx, ny) || map[nx][ny] == '#')
 					continue;
-				v[nx][ny] = true;
-
+				map[nx][ny] = '#';
 				q.add(new Node(nx, ny));
 				cnt++;
 			}
@@ -64,7 +60,6 @@ public class Main {
 		n = Integer.parseInt(br.readLine());
 
 		map = new char[n][];
-		v = new boolean[n][n];
 
 		int sx = -1, sy = -1;
 
