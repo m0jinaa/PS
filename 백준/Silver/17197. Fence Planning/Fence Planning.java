@@ -5,34 +5,6 @@ import java.util.StringTokenizer;
 public class Main {
 	static Cow[] cows;
 
-	static int find(int x) {
-		if (cows[x].p != x) {
-			cows[x].p = find(cows[x].p);
-		}
-
-		return cows[x].p;
-	}
-
-	static void union(int x, int y) {
-		x = find(x);
-		y = find(y);
-
-		if (x == y)
-			return;
-
-		if (x > y) {
-			int t = x;
-			x = y;
-			y = t;
-		}
-
-		cows[y].p = x;
-		cows[x].minX = Math.min(cows[x].minX, cows[y].minX);
-		cows[x].minY = Math.min(cows[x].minY, cows[y].minY);
-		cows[x].maxX = Math.max(cows[x].maxX, cows[y].maxX);
-		cows[x].maxY = Math.max(cows[x].maxY, cows[y].maxY);
-	}
-
 	static class Cow {
 		int p;
 		int minX, minY, maxX, maxY;
@@ -44,6 +16,34 @@ public class Main {
 			this.minY = minY;
 			this.maxX = maxX;
 			this.maxY = maxY;
+		}
+
+		private static int find(int x) {
+			if (cows[x].p != x) {
+				cows[x].p = find(cows[x].p);
+			}
+
+			return cows[x].p;
+		}
+
+		public static void union(int x, int y) {
+			x = find(x);
+			y = find(y);
+
+			if (x == y)
+				return;
+
+			if (x > y) {
+				int t = x;
+				x = y;
+				y = t;
+			}
+
+			cows[y].p = x;
+			cows[x].minX = Math.min(cows[x].minX, cows[y].minX);
+			cows[x].minY = Math.min(cows[x].minY, cows[y].minY);
+			cows[x].maxX = Math.max(cows[x].maxX, cows[y].maxX);
+			cows[x].maxY = Math.max(cows[x].maxY, cows[y].maxY);
 		}
 
 		public int getPerimeter() {
@@ -84,7 +84,7 @@ public class Main {
 			a = Integer.parseInt(st.nextToken());
 			b = Integer.parseInt(st.nextToken());
 
-			union(a, b);
+			Cow.union(a, b);
 		}
 
 		int answer = Integer.MAX_VALUE;
@@ -100,6 +100,5 @@ public class Main {
 		}
 
 		System.out.println(answer);
-
 	}
 }
