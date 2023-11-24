@@ -8,7 +8,6 @@ public class Main {
 	static int[] dx = new int[] { -1, -1, -1, 0, 1, 1, 1, 0 };
 	static int[] dy = new int[] { -1, 0, 1, 1, 1, 0, -1, -1 };
 	static char[][] map;
-	static boolean[][] v;
 	static LinkedList<Node> q;
 
 	static class Node {
@@ -19,6 +18,7 @@ public class Main {
 			this.x = x;
 			this.y = y;
 		}
+
 	}
 
 	static boolean inRange(int x, int y) {
@@ -33,7 +33,7 @@ public class Main {
 		int cnt = 1;
 
 		q.add(new Node(x, y));
-		v[x][y] = true;
+		map[x][y] = '*';
 
 		Node now;
 		int nx, ny;
@@ -44,9 +44,9 @@ public class Main {
 			for (int i = 0; i < 8; i++) {
 				nx = now.x + dx[i];
 				ny = now.y + dy[i];
-				if (!inRange(nx, ny) || map[nx][ny] == '*' || v[nx][ny])
+				if (!inRange(nx, ny) || map[nx][ny] == '*')
 					continue;
-				v[nx][ny] = true;
+				map[nx][ny] = '*';
 				q.add(new Node(nx, ny));
 				cnt++;
 			}
@@ -66,7 +66,6 @@ public class Main {
 		n = Integer.parseInt(st.nextToken());
 
 		map = new char[n][];
-		v = new boolean[n][m];
 		q = new LinkedList<>();
 
 		for (int i = 0; i < n; i++) {
@@ -79,7 +78,7 @@ public class Main {
 
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
-				if (map[i][j] == '*' || v[i][j])
+				if (map[i][j] == '*')
 					continue;
 				cnt = bfs(i, j);
 
@@ -88,5 +87,6 @@ public class Main {
 		}
 
 		System.out.println(answer);
+
 	}
 }
