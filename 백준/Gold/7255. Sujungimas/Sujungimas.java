@@ -21,11 +21,9 @@ public class Main {
 
 		if (a == b)
 			return;
-		else if (a < b) {
-			cost[b] = Math.min(cost[b], cost[a]);
+		else if (cost[a] < cost[b]) {
 			parent[b] = a;
 		} else {
-			cost[a] = Math.min(cost[a], cost[b]);
 			parent[a] = b;
 		}
 	}
