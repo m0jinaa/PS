@@ -6,7 +6,6 @@ import java.util.StringTokenizer;
 public class Main {
 	static int n, m;
 	static char[][] map;
-	static boolean[][] v;
 	static int[] dx = new int[] { 0, 0, 1, -1 };
 	static int[] dy = new int[] { 1, -1, 0, 0 };
 	static LinkedList<Node> q;
@@ -32,7 +31,7 @@ public class Main {
 		q.clear();
 
 		q.add(new Node(x, y));
-		v[x][y] = true;
+		map[x][y] = '.';
 
 		Node now;
 		int nx, ny;
@@ -43,9 +42,9 @@ public class Main {
 			for (int i = 0; i < 4; i++) {
 				nx = now.x + dx[i];
 				ny = now.y + dy[i];
-				if (!inRange(nx, ny) || map[nx][ny] != '#' || v[nx][ny])
+				if (!inRange(nx, ny) || map[nx][ny] != '#')
 					continue;
-				v[nx][ny] = true;
+				map[nx][ny] = '.';
 				q.add(new Node(nx, ny));
 			}
 		}
@@ -62,7 +61,6 @@ public class Main {
 		m = Integer.parseInt(st.nextToken());
 
 		map = new char[n][];
-		v = new boolean[n][m];
 
 		q = new LinkedList<>();
 
@@ -74,7 +72,7 @@ public class Main {
 
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
-				if (map[i][j] != '#' || v[i][j])
+				if (map[i][j] != '#')
 					continue;
 				bfs(i, j);
 				cnt++;
