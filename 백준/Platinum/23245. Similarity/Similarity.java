@@ -4,40 +4,31 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-	static final int MAX = 1_000_000;
+	static final int MAX = 1_000_001;
 
-	static class SegTree {
+	static class PTree {
 		long[] tree;
 
-		public SegTree(int n) {
-			int size = (int) Math.pow(2, (int) Math.ceil(Math.log10(n) / Math.log10(2)) + 1);
-
-			tree = new long[size];
+		public PTree() {
+			tree = new long[MAX + 1];
 		}
 
-		void update(int l, int r, int x, long v, int k) {
-			if (r < x || x < l)
-				return;
-			else if (l == r) {
-				tree[k] += v;
-			} else {
-				int m = (l + r) / 2;
-				update(l, m, x, v, 2 * k);
-				update(m + 1, r, x, v, 2 * k + 1);
-
-				tree[k] = tree[2 * k] + tree[2 * k + 1];
+		void update(int x, long v) {
+			while (x <= MAX) {
+				tree[x] += v;
+				x += (x & (-x));
 			}
 		}
 
-		long get(int l, int r, int s, int e, int k) {
-			if (r < s || e < l)
-				return 0;
-			else if (s <= l && r <= e)
-				return tree[k];
-			else {
-				int m = (l + r) / 2;
-				return get(l, m, s, e, 2 * k) + get(m + 1, r, s, e, 2 * k + 1);
+		long get(int x) {
+			long v = 0;
+
+			while (x > 0) {
+				v += tree[x];
+				x -= (x & (-x));
 			}
+
+			return v;
 		}
 	}
 
@@ -67,36 +58,36 @@ public class Main {
 
 		int n = Integer.parseInt(br.readLine());
 
-		SegTree tree = new SegTree(MAX + 1);
+		PTree tree = new PTree();
 
 		Dot[] dots = new Dot[n];
 
 		st = new StringTokenizer(br.readLine(), " ");
 
 		for (int i = 0; i < n; i++) {
-			dots[i] = new Dot(Integer.parseInt(st.nextToken()));
+			dots[i] = new Dot(Integer.parseInt(st.nextToken() + 1));
 		}
 
 		st = new StringTokenizer(br.readLine(), " ");
 
 		for (int i = 0; i < n; i++) {
-			dots[i].y = Integer.parseInt(st.nextToken());
+			dots[i].y = Integer.parseInt(st.nextToken()) + 1;
 		}
 
 		Arrays.sort(dots);
 
 		for (int i = 0; i < n; i++) {
-			dots[i].c = tree.get(0, MAX, 0, dots[i].y - 1, 1);
-			tree.update(0, MAX, dots[i].y, 1, 1);
+			dots[i].c = tree.get(dots[i].y - 1);
+			tree.update(dots[i].y, 1);
 		}
 
 		long ans = 0;
 
-		SegTree cntTree = new SegTree(MAX + 1);
+		PTree cntTree = new PTree();
 
 		for (int i = 0; i < n; i++) {
-			ans += cntTree.get(0, MAX, 0, dots[i].y - 1, 1);
-			cntTree.update(0, MAX, dots[i].y, dots[i].c, 1);
+			ans += cntTree.get(dots[i].y - 1);
+			cntTree.update(dots[i].y, dots[i].c);
 		}
 
 		System.out.println(ans);
