@@ -3,12 +3,11 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-public class Main {
+public class Main{
 	static int n, m;
 	static int[] dx = new int[] { 0, 0, 1, -1 };
 	static int[] dy = new int[] { 1, -1, 0, 0 };
 	static char[][] map;
-	static boolean[][] v;
 
 	static class Node {
 		int x, y, d;
@@ -30,27 +29,26 @@ public class Main {
 	static int bfs(int x, int y) {
 		LinkedList<Node> q = new LinkedList<>();
 		q.add(new Node(x, y, 0));
-		v[x][y] = true;
+		map[x][y] = '*';
 
 		Node now;
 		int nx, ny;
 		int cnt = -1;
 
-		while (!q.isEmpty()) {
+		end: while (!q.isEmpty()) {
 			now = q.poll();
-
-			if (map[now.x][now.y] == 'B') {
-				cnt = now.d;
-				break;
-			}
 
 			for (int i = 0; i < 4; i++) {
 				nx = now.x + dx[i];
 				ny = now.y + dy[i];
 
-				if (!inRange(nx, ny) || map[nx][ny] == '*' || v[nx][ny])
+				if (!inRange(nx, ny) || map[nx][ny] == '*')
 					continue;
-				v[nx][ny] = true;
+				if (map[nx][ny] == 'B') {
+					cnt = now.d + 1;
+					break end;
+				}
+				map[nx][ny] = '*';
 				q.add(new Node(nx, ny, now.d + 1));
 			}
 		}
@@ -68,7 +66,6 @@ public class Main {
 		m = Integer.parseInt(st.nextToken());
 
 		map = new char[n][];
-		v = new boolean[n][m];
 
 		int sx = -1, sy = -1;
 
