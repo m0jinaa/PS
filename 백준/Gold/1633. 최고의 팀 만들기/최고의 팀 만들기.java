@@ -33,40 +33,30 @@ public class Main {
 			player.add(new Player(w, b));
 		}
 
-		int n = player.size();
+		int[][] dp = new int[m + 1][m + 1];
 
-		int[][][] dp = new int[n + 1][m + 1][m + 1];
-		for (int i = 0; i <= n; i++) {
-			for (int j = 0; j <= m; j++) {
-				Arrays.fill(dp[i][j], -1);
-			}
+		for (int i = 0; i <= m; i++) {
+			Arrays.fill(dp[i], -1);
 		}
 
-		dp[0][0][0] = 0;
-		int ind = 0;
-
-		int answer = 0;
+		dp[0][0] = 0;
 
 		for (Player p : player) {
-			ind++;
 
-			for (int i = 0; i <= m; i++) {
-				for (int j = 0; j <= m; j++) {
-					dp[ind][i][j] = dp[ind - 1][i][j];
+			for (int i = m; i >= 0; i--) {
+				for (int j = m; j >= 0; j--) {
 
-					if (i > 0 && dp[ind - 1][i - 1][j] != -1) {
-						dp[ind][i][j] = Math.max(dp[ind][i][j], dp[ind - 1][i - 1][j] + p.w);
+					if (i > 0 && dp[i - 1][j] != -1) {
+						dp[i][j] = Math.max(dp[i][j], dp[i - 1][j] + p.w);
 					}
 
-					if (j > 0 && dp[ind - 1][i][j - 1] != -1) {
-						dp[ind][i][j] = Math.max(dp[ind][i][j], dp[ind - 1][i][j - 1] + p.b);
+					if (j > 0 && dp[i][j - 1] != -1) {
+						dp[i][j] = Math.max(dp[i][j], dp[i][j - 1] + p.b);
 					}
-
 				}
 			}
-			answer = Math.max(answer, dp[ind][m][m]);
 		}
 
-		System.out.println(answer);
+		System.out.println(dp[m][m]);
 	}
 }
