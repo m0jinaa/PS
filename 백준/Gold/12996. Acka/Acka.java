@@ -6,6 +6,15 @@ import java.util.StringTokenizer;
 public class Main {
 	static long[][][][] dp;
 	static final int MOD = 1_000_000_007;
+	static int[] da = new int[] { -1, 0, 0, -1, -1, 0, -1 };
+	static int[] db = new int[] { 0, -1, 0, -1, 0, -1, -1 };
+	static int[] dc = new int[] { 0, 0, -1, 0, -1, -1, -1 };
+
+	static boolean inRange(int a, int b, int c) {
+		if (a < 0 || b < 0 || c < 0)
+			return false;
+		return true;
+	}
 
 	static long getCnt(int s, int a, int b, int c) {
 		if (dp[s][a][b][c] != -1)
@@ -18,26 +27,15 @@ public class Main {
 			}
 		}
 		long cnt = 0;
-		if (a > 0) {
-			cnt = (cnt + getCnt(s - 1, a - 1, b, c)) % MOD;
-		}
-		if (b > 0) {
-			cnt = (cnt + getCnt(s - 1, a, b - 1, c)) % MOD;
-		}
-		if (c > 0) {
-			cnt = (cnt + getCnt(s - 1, a, b, c - 1)) % MOD;
-		}
-		if (a > 0 && b > 0) {
-			cnt = (cnt + getCnt(s - 1, a - 1, b - 1, c)) % MOD;
-		}
-		if (a > 0 && c > 0) {
-			cnt = (cnt + getCnt(s - 1, a - 1, b, c - 1)) % MOD;
-		}
-		if (b > 0 && c > 0) {
-			cnt = (cnt + getCnt(s - 1, a, b - 1, c - 1)) % MOD;
-		}
-		if (a > 0 && b > 0 && c > 0) {
-			cnt = (cnt + getCnt(s - 1, a - 1, b - 1, c - 1)) % MOD;
+		int na, nb, nc;
+		for (int i = 0; i < 7; i++) {
+			na = a + da[i];
+			nb = b + db[i];
+			nc = c + dc[i];
+			if (!inRange(na, nb, nc))
+				continue;
+			cnt = (cnt + getCnt(s - 1, na, nb, nc)) % MOD;
+
 		}
 
 		return dp[s][a][b][c] = cnt;
