@@ -8,24 +8,6 @@ public class Main {
 	static int[][] boost;
 	static int[][] dp;
 
-	static int getMax(int t, int x, int c) {
-		if (dp[t][x] != -1)
-			return dp[t][x];
-		else if (t == 0) {
-			return dp[t][x] = 0;
-		}
-
-		int max = x + getMax(t - 1, x, c + x);
-
-		for (int[] button : boost) {
-			if (c < button[0])
-				continue;
-			max = Math.max(max, getMax(t - 1, x + button[1], c - button[0]) - button[0]);
-		}
-
-		return dp[t][x] = max;
-	}
-
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
@@ -35,6 +17,7 @@ public class Main {
 		n = Integer.parseInt(st.nextToken());
 		int k = Integer.parseInt(st.nextToken());
 
+		int answer = 0;
 		boost = new int[n][2];
 
 		for (int i = 0; i < n; i++) {
@@ -43,12 +26,33 @@ public class Main {
 			boost[i][1] = Integer.parseInt(st.nextToken());
 		}
 
-		dp = new int[k + 1][6000];
+		dp = new int[k + 1][5002];
 
 		for (int i = 0; i <= k; i++) {
 			Arrays.fill(dp[i], -1);
 		}
-		int answer = getMax(k, 1, 0);
+
+		dp[0][1] = 0;
+
+		for (int i = 0; i < k; i++) {
+			for (int j = 0; j <= 5001; j++) {
+				if (dp[i][j] == -1)
+					continue;
+				// 구매x
+				dp[i + 1][j] = Math.max(dp[i + 1][j], dp[i][j] + j);
+                   
+                // 구매
+				for (int[] b : boost) {
+					if (dp[i][j] >= b[0]) {
+						dp[i + 1][j + b[1]] = Math.max(dp[i + 1][j + b[1]], dp[i][j] - b[0]);
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i <= 5001; i++) {
+			answer = Math.max(answer, dp[k][i]);
+		}
 
 		System.out.println(answer);
 	}
