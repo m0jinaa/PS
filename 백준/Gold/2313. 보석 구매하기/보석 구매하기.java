@@ -10,42 +10,50 @@ public class Main {
 
 		int n = Integer.parseInt(br.readLine());
 		long total = 0;
-		int[] sum;
+		int[] value;
 		int max;
-		int s, e;
+		int s, e, left, right;
 		int l;
-		int v;
+		int sum;
 		while (n-- > 0) {
 			l = Integer.parseInt(br.readLine());
 
-			sum = new int[l + 1];
+			value = new int[l + 1];
 
 			st = new StringTokenizer(br.readLine(), " ");
 
 			for (int i = 1; i <= l; i++) {
-				sum[i] = sum[i - 1] + Integer.parseInt(st.nextToken());
+				value[i] = Integer.parseInt(st.nextToken());
 			}
 
 			max = -10001;
-			s = -1;
-			e = -1;
+			s = 1;
+			e = 1;
+			left = 1;
+			right = 1;
 
-			for (int i = 1; i <= l; i++) {
-				for (int j = i; j <= l; j++) {
-					v = sum[j] - sum[i - 1];
-					if (v > max) {
-						max = v;
-						s = i;
-						e = j;
-					} else if (v == max && e - s > j - i) {
-						s = i;
-						e = j;
-					}
+			sum = 0;
+
+			while (e <= l) {
+				sum += value[e];
+
+				if (sum > max) {
+					max = sum;
+					left = s;
+					right = e;
+				} else if (sum == max && right - left > e - s) {
+					left = s;
+					right = e;
+				}
+				e++;
+				if (sum <= 0) {
+					s = e;
+					sum = 0;
 				}
 			}
 
 			total += max;
-			sb.append(s).append(" ").append(e).append("\n");
+			sb.append(left).append(" ").append(right).append("\n");
 		}
 
 		System.out.println(total);
