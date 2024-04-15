@@ -1,36 +1,33 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class Main {
 	static ArrayList<Integer>[] canGo;
-	static boolean[][] v;
-	static LinkedList<Node> q;
+	static boolean[] v;
+	static LinkedList<Integer> q;
+	static int[] cnt;
 
-	static class Node {
-		int x, s;
+	static void bfs(int x) {
 
-		public Node(int x, int s) {
-			super();
-			this.x = x;
-			this.s = s;
-		}
-	}
-
-	static void bfs() {
-
-		Node now;
+		q.clear();
+		cnt[x]++;
+		q.add(x);
+		v[x] = true;
+		int now;
 
 		while (!q.isEmpty()) {
 			now = q.poll();
 
-			for (int nx : canGo[now.x]) {
-				if (v[now.s][nx])
+			for (int nx : canGo[now]) {
+				if (v[nx])
 					continue;
-				v[now.s][nx] = true;
-				q.add(new Node(nx, now.s));
+				v[nx] = true;
+				cnt[nx]++;
+				q.add(nx);
 			}
 		}
 	}
@@ -46,19 +43,20 @@ public class Main {
 		int m = Integer.parseInt(st.nextToken());
 
 		canGo = new ArrayList[n + 1];
-		v = new boolean[k][n + 1];
+		v = new boolean[n + 1];
 		q = new LinkedList<>();
+		cnt = new int[n + 1];
 
 		for (int i = 1; i <= n; i++) {
 			canGo[i] = new ArrayList<>();
 		}
 
 		int s;
+		int[] start = new int[k];
 
 		for (int i = 0; i < k; i++) {
 			s = Integer.parseInt(br.readLine());
-			q.add(new Node(s, i));
-			v[i][s] = true;
+			start[i] = s;
 		}
 		int a, b;
 
@@ -70,18 +68,16 @@ public class Main {
 			canGo[a].add(b);
 		}
 
-		bfs();
+		for (int i = 0; i < k; i++) {
+			Arrays.fill(v, false);
+			bfs(start[i]);
+		}
 
 		int answer = 0;
 
 		for (int i = 1; i <= n; i++) {
-			for (int j = 0; j < k; j++) {
-				if (!v[j][i])
-					continue;
-				else if (j == k - 1) {
-					answer++;
-				}
-			}
+			if (cnt[i] == k)
+				answer++;
 		}
 
 		System.out.println(answer);
