@@ -9,38 +9,45 @@ public class Main {
 
 		int n = Integer.parseInt(br.readLine());
 
-		int[] A = new int[n + 1];
-
-		int[] dp = new int[n + 1];
+		int[] A = new int[n];
 
 		st = new StringTokenizer(br.readLine(), " ");
 
-		for (int i = 1; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			A[i] = Integer.parseInt(st.nextToken());
-			dp[i] = -1;
 		}
+
+		int answer = 0;
 
 		int s, e;
 
-		for (int i = 2; i <= n; i += 2) {
-			for (int j = i - 1; j > 0; j -= 2) {
-				s = j;
-				e = i;
+		boolean p;
+		for (int i = 0; i < n;) {
+			p = false;
+			for (int j = i + 1; j < n; j += 2) {
+				s = i;
+				e = j;
 
-				while (s <= e) {
+				while (s < e) {
 					if (A[s] != A[e])
 						break;
 					s++;
 					e--;
 				}
 
-				if (s < e || dp[j - 1] == -1)
-					continue;
-
-				dp[i] = Math.max(dp[i], dp[j - 1] + 1);
+				if (s > e) {
+					answer++;
+					p = true;
+					i = j + 1;
+					break;
+				}
+			}
+			if (!p) {
+				answer = -1;
+				break;
 			}
 		}
 
-		System.out.println(dp[n]);
+		System.out.println(answer);
 	}
 }
