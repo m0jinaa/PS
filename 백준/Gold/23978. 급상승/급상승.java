@@ -17,9 +17,12 @@ public class Main {
 			p = Math.min(a, x);
 
 			sum += (p * x - p * (p - 1) / 2);
+
+			if (sum >= k)
+				return true;
 		}
 
-		return sum >= k;
+		return false;
 	}
 
 	public static void main(String[] args) throws Exception {
