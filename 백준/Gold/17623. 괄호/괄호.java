@@ -30,12 +30,9 @@ public class Main {
 			ret = min(ret, "1" + getMin(x / 2) + "2");
 		}
 
-		ret = min(ret, "12" + getMin(x - 1));
-		ret = min(ret, getMin(x - 1) + "12");
-		ret = min(ret, "34" + getMin(x - 2));
-		ret = min(ret, getMin(x - 2) + "34");
-		ret = min(ret, "56" + getMin(x - 3));
-		ret = min(ret, getMin(x - 3) + "56");
+		for (int i = 1; i < x; i++) {
+			ret = min(ret, getMin(i) + getMin(x - i));
+		}
 
 		return dp[x] = ret;
 	}
