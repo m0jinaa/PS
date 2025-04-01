@@ -16,27 +16,29 @@ public class Main {
 
 		int a;
 
-		int[][] dp = new int[n + 1][5];
+		int[] dp = new int[5];
 
-		Arrays.fill(dp[0], INF);
+		Arrays.fill(dp, INF);
 
-		dp[0][0] = 0;
+		dp[0] = 0;
+
+		int m;
 
 		for (int i = 1; i <= n; i++) {
 			a = Integer.parseInt(st.nextToken());
 
-			Arrays.fill(dp[i], INF);
-			dp[i][0] = 0;
+			m = Math.min(i, 4);
 
-			for (int j = 1; j < 5 && j <= i; j++) {
+			// 반대방향으로 해야 중복 안됨.
+			for (int j = m; j > 0; j--) {
 				if (j % 2 != 0) {
-					dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - 1] - a);
+					dp[j] = Math.max(dp[j], dp[j - 1] - a);
 				} else {
-					dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - 1] + a);
+					dp[j] = Math.max(dp[j], dp[j - 1] + a);
 				}
 			}
 		}
 
-		System.out.println(dp[n][4]);
+		System.out.println(dp[4]);
 	}
 }
