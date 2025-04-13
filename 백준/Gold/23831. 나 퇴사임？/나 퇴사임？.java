@@ -21,6 +21,7 @@ public class Main {
 		if (dp[x][a][b][c] != -1)
 			return dp[x][a][b][c];
 
+		// 필수 자습횟수 채우지 못해서 return이 INF 경우 고려해서 INF로 해야함.
 		int happy = INF;
 
 		// a : 요양
