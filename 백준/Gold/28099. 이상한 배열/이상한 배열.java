@@ -6,18 +6,13 @@ import java.util.StringTokenizer;
 public class Main {
 	static int n;
 	static int[] maxTree; // 구간최대값 저장하는 tree;
-	
-	//Top-Down 방식으로 원소 저장
-	static void update(int s, int e, int ind, int v, int x) {
-		if (s > ind || e < ind)
-			return;
-		if (s == ind && ind == e) {
+
+	// Bottom-Up 방식으로 저장
+	static void update(int x, int v) {
+		while (x != 0) {
 			maxTree[x] = Math.max(maxTree[x], v);
-		} else {
-			int m = (s + e) / 2;
-			maxTree[x] = Math.max(maxTree[x], v);
-			update(s, m, ind, v, 2 * x);
-			update(m + 1, e, ind, v, 2 * x + 1);
+
+			x >>= 1;
 		}
 	}
 
@@ -66,11 +61,11 @@ public class Main {
 			for (int i = 0; i < n; i++) {
 				a = Integer.parseInt(st.nextToken());
 
-				update(0, n - 1, i, a, 1);
+				update(N / 2 + i, a);
 
 				if (loc[a] != -1) { // 같은 원소 들어온 적 있음
 					// 제일 처음 들어온 위치와 지금 위치 사이의 값 중 최댓값이 현재 값을 넘으면 이상한 배열 아님.
-					if (get(0, n - 1, loc[a], i, 1) <= a) {
+					if (get(0, N / 2 - 1, loc[a], i, 1) <= a) {
 						continue;
 					}
 					answer = false;
