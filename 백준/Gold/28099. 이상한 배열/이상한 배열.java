@@ -6,7 +6,8 @@ import java.util.StringTokenizer;
 public class Main {
 	static int n;
 	static int[] maxTree; // 구간최대값 저장하는 tree;
-
+	
+	//Top-Down 방식으로 원소 저장
 	static void update(int s, int e, int ind, int v, int x) {
 		if (s > ind || e < ind)
 			return;
