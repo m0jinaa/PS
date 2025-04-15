@@ -5,13 +5,18 @@ import java.util.StringTokenizer;
 
 public class Main {
 	static int n;
-	static int[] maxTree; // 구간최대값 저장하는 tree;
+	static int[] maxTree; // 구간최댓값 저장하는 tree;
 
 	// Bottom-Up 방식으로 저장
 	static void update(int x, int v) {
 		while (x != 0) {
-			maxTree[x] = Math.max(maxTree[x], v);
+			// 현재 구간의 최댓값이 v값보다 크다면 더 진행할 필요 없음
+			if (maxTree[x] >= v)
+				break;
 
+			maxTree[x] = v;
+
+			// 부모노드로 이동
 			x >>= 1;
 		}
 	}
