@@ -70,12 +70,15 @@ public class Main {
 
 					nh = i + hobbies[k].h;
 					nm = j + hobbies[k].m;
-
+					
+					// 시간과 체력이 남아있지 않은 경우 패스
 					if (nh > b || nm > c)
 						continue;
 
+					// 임계체력 도달했는지 확인 후 스트레스 해소값 도출
 					nl = dp[i][j] + ((c - j > d) ? hobbies[k].l : (int) Math.floor(((100 - e) / 100.0) * hobbies[k].l));
 
+					//최대값으로 하되 초기 스트레스값을 넘을 수 없음
 					dp[nh][nm] = Math.min(a, Math.max(dp[nh][nm], nl));
 				}
 			}
