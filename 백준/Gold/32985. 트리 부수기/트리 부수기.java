@@ -12,7 +12,7 @@ public class Main {
 		LinkedList<Integer> q = new LinkedList<>();
 
 		q.add(0);
-		dist[0] = 0;
+		dist[0] = (n - 1) % 2;
 
 		int x;
 
@@ -22,7 +22,7 @@ public class Main {
 			for (int nx : connectedTo[x]) {
 				if (dist[nx] != -1)
 					continue;
-				dist[nx] = dist[x] + 1;
+				dist[nx] = 1 - dist[x];
 				q.add(nx);
 			}
 		}
@@ -57,14 +57,11 @@ public class Main {
 			connectedTo[b].add(a);
 		}
 
-		// 0번 노드에서부터 각 노드까지의 거리 체크
 		bfs();
 
-		// 각 자리수마다 n-1-거리가 짝수면 0 홀수면 1
 		// 높은 노드번호부터 내림차순으로
-
 		for (int i = n - 1; i > 0; i--) {
-			sb.append((n - 1 - dist[i]) % 2);
+			sb.append(dist[i]);
 		}
 
 		System.out.println(sb.toString());
