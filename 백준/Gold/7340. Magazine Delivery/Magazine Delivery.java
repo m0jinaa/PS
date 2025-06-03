@@ -11,6 +11,7 @@ public class Main {
 		final long INF = 6_000_000_007L;
 		String input;
 
+		//입력에 포함된 빈줄 제거용
 		while ((input = br.readLine()) == null || input.isEmpty())
 			;
 
