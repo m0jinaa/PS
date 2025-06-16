@@ -1,22 +1,17 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.PriorityQueue;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class Main {
-	static class Node implements Comparable<Node> {
+	static class Node {
 		int x, t;
 
 		public Node(int x, int t) {
 			super();
 			this.x = x;
 			this.t = t;
-		}
-
-		@Override
-		public int compareTo(Node node) {
-			return this.t - node.t;
 		}
 	}
 
@@ -54,17 +49,21 @@ public class Main {
 
 		Arrays.fill(time, INF);
 
-		PriorityQueue<Node> q = new PriorityQueue<>();
+		LinkedList<Node> withPortal = new LinkedList<>();
+		LinkedList<Node> withoutPortal = new LinkedList<>();
 
-		q.add(new Node(0, 0));
+		withoutPortal.add(new Node(0, 0));
 		time[0] = 0;
 
 		Node now;
 
 		int answer = -1;
 
-		while (!q.isEmpty()) {
-			now = q.poll();
+		while (!withPortal.isEmpty() || !withoutPortal.isEmpty()) {
+			if (!withPortal.isEmpty())
+				now = withPortal.poll();
+			else
+				now = withoutPortal.poll();
 
 			if (now.x == n - 1) {
 				answer = now.t;
@@ -76,14 +75,14 @@ public class Main {
 			// blue
 			if (portal[now.x][0] != -1 && time[portal[now.x][1]] > time[now.x]) {
 				time[portal[now.x][1]] = time[now.x];
-				q.add(new Node(portal[now.x][1], time[now.x]));
+				withPortal.add(new Node(portal[now.x][1], time[now.x]));
 			}
 
 			// blue
 			// normal
 			if (portal[now.x][0] != 0 && time[now.x + 1] > time[now.x] + 1) {
 				time[now.x + 1] = time[now.x] + 1;
-				q.add(new Node(now.x + 1, time[now.x] + 1));
+				withoutPortal.add(new Node(now.x + 1, time[now.x] + 1));
 			}
 		}
 
