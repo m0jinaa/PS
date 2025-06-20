@@ -4,82 +4,62 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int n, m;
-
-	static class Node {
-		int x, y;
-
-		public Node(int x, int y) {
-			super();
-			this.x = x;
-			this.y = y;
-		}
-	}
-
-	static boolean inRange(int x, int y) {
-		if (x <= 0 || x > n || y <= 0 || y > m)
-			return false;
-		return true;
-	}
-
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 
-		n = Integer.parseInt(br.readLine());
-		m = Integer.parseInt(br.readLine());
+		int n = Integer.parseInt(br.readLine());
+		int m = Integer.parseInt(br.readLine());
 
-		int[][] map = new int[n + 1][m + 1];
-		boolean[][] v = new boolean[n + 1][m + 1];
+		final int MAX = n * m;
+
+		boolean[] v = new boolean[MAX + 1];
+
+		int x;
+
+		LinkedList<Integer>[] canGo = new LinkedList[MAX + 1];
 
 		for (int i = 1; i <= n; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
 
 			for (int j = 1; j <= m; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
+				x = Integer.parseInt(st.nextToken());
+				if (x > MAX)
+					continue;
+
+				if (canGo[x] == null) {
+					canGo[x] = new LinkedList<>();
+				}
+
+				canGo[x].add(i * j);
 			}
 		}
 
-		LinkedList<Node> q = new LinkedList<>();
+		LinkedList<Integer> q = new LinkedList<>();
 
-		q.add(new Node(1, 1));
-		v[1][1] = true;
+		q.add(n * m);
+		v[n * m] = true;
 
-		Node now;
-		int nx, ny;
-
-		int x, limit;
+		int now;
 
 		boolean possible = false;
 
 		while (!q.isEmpty()) {
 			now = q.poll();
 
-			if (now.x == n && now.y == m) {
+			if (now == 1) {
 				possible = true;
 				break;
 			}
 
-			x = map[now.x][now.y];
+			if (canGo[now] == null)
+				continue;
 
-			limit = (int) Math.floor(Math.sqrt(x));
-
-			// 약수 찾아서 갈 수 있는 곳 찾기
-			for (int i = 1; i <= limit; i++) {
-				if (x % i != 0)
-					continue;
-				nx = i;
-				ny = x / i;
-
-				if (inRange(nx, ny) && !v[nx][ny]) {
-					v[nx][ny] = true;
-					q.add(new Node(nx, ny));
-				}
-
-				if (inRange(ny, nx) && !v[ny][nx]) {
-					v[ny][nx] = true;
-					q.add(new Node(ny, nx));
-				}
+			for (int nx : canGo[now]) {
+                if(v[nx])
+                    continue;
+				q.add(nx);
+				v[nx] = true;
 			}
 		}
 
