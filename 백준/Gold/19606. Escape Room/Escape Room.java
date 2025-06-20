@@ -24,21 +24,22 @@ public class Main {
 
 			for (int j = 1; j <= m; j++) {
 				x = Integer.parseInt(st.nextToken());
+
 				if (x > MAX)
 					continue;
 
-				if (canGo[x] == null) {
-					canGo[x] = new LinkedList<>();
+				if (canGo[i * j] == null) {
+					canGo[i * j] = new LinkedList<>();
 				}
 
-				canGo[x].add(i * j);
+				canGo[i * j].add(x);
 			}
 		}
 
 		LinkedList<Integer> q = new LinkedList<>();
 
-		q.add(n * m);
-		v[n * m] = true;
+		q.add(1);
+		v[1] = true;
 
 		int now;
 
@@ -47,17 +48,16 @@ public class Main {
 		while (!q.isEmpty()) {
 			now = q.poll();
 
-			if (now == 1) {
+			if (now == MAX) {
 				possible = true;
 				break;
-			}
-
-			if (canGo[now] == null)
+			} else if (canGo[now] == null)
 				continue;
 
 			for (int nx : canGo[now]) {
-                if(v[nx])
-                    continue;
+				if (v[nx])
+					continue;
+
 				q.add(nx);
 				v[nx] = true;
 			}
