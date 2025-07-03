@@ -7,16 +7,6 @@ public class Main {
 	static int[] parent;
 	static int[] cnt;
 
-	static class Edge {
-		int a, b;
-
-		public Edge(int a, int b) {
-			super();
-			this.a = a;
-			this.b = b;
-		}
-	}
-
 	static int find(int x) {
 		if (parent[x] != x) {
 			parent[x] = find(parent[x]);
@@ -54,7 +44,7 @@ public class Main {
 		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
 
-		Edge[] edges;
+		int[][] edges;
 
 		int m, a, b;
 		boolean possible;
@@ -71,7 +61,7 @@ public class Main {
 			parent = new int[n];
 			cnt = new int[n];
 
-			edges = new Edge[m];
+			edges = new int[m][2];
 
 			for (int i = 0; i < m; i++) {
 				st = new StringTokenizer(br.readLine(), " ");
@@ -79,7 +69,8 @@ public class Main {
 				a = Integer.parseInt(st.nextToken());
 				b = Integer.parseInt(st.nextToken());
 
-				edges[i] = new Edge(a, b);
+				edges[i][0] = a;
+				edges[i][1] = b;
 			}
 
 			possible = true;
@@ -89,7 +80,7 @@ public class Main {
 				for (int j = 0; j < m; j++) {
 					if (i == j)
 						continue;
-					union(edges[j].a, edges[j].b);
+					union(edges[j][0], edges[j][1]);
 				}
 
 				if (cnt[0] != n) {
@@ -101,6 +92,6 @@ public class Main {
 			sb.append(possible ? "No\n" : "Yes\n");
 		}
 
-		System.out.print(sb.toString());
+		System.out.println(sb.toString());
 	}
 }
