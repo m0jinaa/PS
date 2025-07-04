@@ -26,42 +26,53 @@ public class Main {
 
 		LinkedList<Long> answer = new LinkedList<>();
 
-		Set<A> visited = new HashSet<>();
+		Set<Long> visited = new HashSet<>();
 
 		LinkedList<A> q = new LinkedList<>();
 		q.add(new A(n, 1L));
-		visited.add(new A(n, 1));
+		visited.add(1L);
 
 		A now;
-		A next;
+		long nv;
+		int qsize;
+
 		while (!q.isEmpty()) {
-			now = q.poll();
+			visited.clear();
+			qsize = q.size();
 
-			if (now.i != n && now.v == 1L)
-				continue;
-			else if (now.i == 1) {
-				answer.add(now.v);
-				continue;
+			while (qsize-- > 0) {
+				now = q.poll();
+
+				if (now.i != n && now.v == 1L)
+					continue;
+				else if (now.i == 1) {
+					answer.add(now.v);
+					continue;
+				}
+
+				if ((now.v - 1) % 3 == 0 && ((now.v - 1) / 3) % 2 != 0) {
+					nv = (now.v - 1) / 3;
+					if (!visited.contains(nv)) {
+						q.add(new A(now.i - 1, nv));
+						visited.add(nv);
+					}
+				}
+
+				nv = now.v * 2;
+
+				if (!visited.contains(nv)) {
+					q.add(new A(now.i - 1, nv));
+					visited.add(nv);
+				}
 			}
-
-			if ((now.v - 1) % 3 == 0 && ((now.v - 1) / 3) % 2 != 0) {
-				next = new A(now.i - 1, (now.v - 1) / 3);
-				q.add(next);
-				visited.add(next);
-			}
-
-			next = new A(now.i - 1, now.v * 2);
-
-			q.add(next);
-			visited.add(next);
 		}
 
 		Collections.sort(answer);
 
 		sb.append(answer.size()).append("\n");
 
-		while (!answer.isEmpty()) {
-			sb.append(answer.poll()).append("\n");
+		for (long ans : answer) {
+			sb.append(ans).append("\n");
 		}
 
 		System.out.println(sb.toString());
