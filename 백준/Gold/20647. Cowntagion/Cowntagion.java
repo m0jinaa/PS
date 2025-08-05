@@ -20,10 +20,9 @@ public class Main {
 			v[y] = true;
 			need++;
 
-			cnt += (getMinTime(y) + 1);
+			cnt += getMinTime(y);
 		}
-        
-        // 현재 머무르는 헛간과 연결된 처음가는 헛간에 바이러스를 확산시키기 충분한 소의 수를 만들기 위한 시간
+
 		cnt += (int) Math.ceil(Math.log(need) / Math.log(2));
 
 		return cnt;
@@ -56,7 +55,7 @@ public class Main {
 
 		v[1] = true;
 
-		int answer = getMinTime(1);
+		int answer = n - 1 + getMinTime(1);
 
 		System.out.println(answer);
 	}
