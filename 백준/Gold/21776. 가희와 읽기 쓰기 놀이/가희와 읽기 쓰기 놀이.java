@@ -1,9 +1,9 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 
 public class Main {
 	static StringBuilder sbb = new StringBuilder();
@@ -18,7 +18,7 @@ public class Main {
 	// 사람마다 낸 카드 개수
 	static int[] cnt;
 	// 만들 수 있는 문자
-	static Set<String> set;
+	static Set<String> answer;
 	static char[] stack;
 	// 삭제 여부 체크
 	static boolean[] deleted;
@@ -110,9 +110,9 @@ public class Main {
 			ind[order[i]]++;
 		}
 		if (err)
-			set.add(ERROR);
+			answer.add(ERROR);
 		else
-			set.add(makeString());
+			answer.add(makeString());
 	}
 
 	static String makeString() {
@@ -157,7 +157,7 @@ public class Main {
 		haveCard = new int[n][];
 		cnt = new int[n];
 		used = new int[n];
-		set = new HashSet<>();
+		answer = new TreeSet<>();
 		stack = new char[MAX];
 		deleted = new boolean[MAX];
 		int m;
@@ -208,13 +208,7 @@ public class Main {
 
 		makeOrder(0);
 
-		String[] answers = new String[set.size()];
-
-		set.toArray(answers);
-
-		Arrays.sort(answers);
-
-		for (String ans : answers) {
+		for (String ans : answer) {
 			sb.append(ans).append("\n");
 		}
 
