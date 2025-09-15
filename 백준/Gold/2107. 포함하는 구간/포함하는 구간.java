@@ -15,13 +15,7 @@ public class Main {
 
 		@Override
 		public int compareTo(Interval interval) {
-			if (this.e - this.s < interval.e - interval.s) {
-				return -1;
-			} else if (this.e - this.s > interval.e - interval.s) {
-				return 1;
-			} else {
-				return this.s - interval.s;
-			}
+			return this.s - interval.s;
 		}
 	}
 
@@ -50,13 +44,12 @@ public class Main {
 
 		int c;
 
-		for (int i = 1; i < n; i++) {
+		for (int i = 0; i < n; i++) {
 			c = 0;
-			for (int j = 0; j < i; j++) {
-				if (intervals[i].s < intervals[j].s && intervals[j].e < intervals[i].e)
+			for (int j = i + 1; j < n && intervals[j].s < intervals[i].e; j++) {
+				if (intervals[j].e < intervals[i].e)
 					c++;
 			}
-
 			answer = Math.max(answer, c);
 		}
 
