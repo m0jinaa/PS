@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-public class Main{
+public class Main {
 	static int n;
 	static int[] parent;
 
@@ -60,6 +60,8 @@ public class Main{
 		int n;
 		int x, y;
 		double d;
+		int connected;
+
 		double answer;
 		int[][] dots;
 		LinkedList<Line> lines = new LinkedList<>();
@@ -72,6 +74,7 @@ public class Main{
 				break;
 
 			answer = 0;
+			connected = 0;
 			lines.clear();
 			dots = new int[n][2];
 			parent = new int[n];
@@ -97,9 +100,12 @@ public class Main{
 			Collections.sort(lines);
 
 			for (Line l : lines) {
-				if (!union(l.a, l.b))
+				if (connected == n - 1)
+					break;
+				else if (!union(l.a, l.b))
 					continue;
 				answer += l.d;
+				connected++;
 			}
 
 			sb.append(String.format("%.02f\n", answer));
