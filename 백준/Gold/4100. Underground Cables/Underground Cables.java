@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -64,7 +63,8 @@ public class Main {
 
 		double answer;
 		int[][] dots;
-		LinkedList<Line> lines = new LinkedList<>();
+		PriorityQueue<Line> lines = new PriorityQueue<>();
+		Line l;
 
 		while (true) {
 
@@ -97,13 +97,12 @@ public class Main {
 				dots[i][1] = y;
 			}
 
-			Collections.sort(lines);
+			while (connected < n - 1) {
+				l = lines.poll();
 
-			for (Line l : lines) {
-				if (connected == n - 1)
-					break;
-				else if (!union(l.a, l.b))
+				if (!union(l.a, l.b))
 					continue;
+
 				answer += l.d;
 				connected++;
 			}
