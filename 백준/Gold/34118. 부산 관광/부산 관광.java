@@ -14,7 +14,7 @@ public class Main {
 			return dp[x][y];
 
 		int cost = INF;
-		int nx, ny;
+		int nx, ny, nd;
 
 		if (x < n) {
 			if (plan[0][x] == '0') {
@@ -46,8 +46,9 @@ public class Main {
 
 		}
 
-		nx = Math.min(n, x + 4);
-		ny = Math.min(n, y + 4);
+		nd = Math.min(n, Math.min(x, y) + 4);
+		nx = Math.max(x, nd);
+		ny = Math.max(y, nd);
 
 		cost = Math.min(cost, pp + getMinCost(nx, ny));
 
