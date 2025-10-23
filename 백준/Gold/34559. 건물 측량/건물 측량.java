@@ -75,25 +75,7 @@ public class Main {
 		}
 
 		// 테두리에 도달할 수 있는 칸 체크
-		for (int i = 1; i <= n; i++) {
-			if (dp[i][1] == 1) {
-				checkBoundary(i, 1);
-			}
-
-			if (dp[i][m] == 1) {
-				checkBoundary(i, m);
-			}
-		}
-
-		for (int i = 1; i <= m; i++) {
-			if (dp[1][i] == 1) {
-				checkBoundary(1, i);
-			}
-
-			if (dp[n][i] == 1) {
-				checkBoundary(n, i);
-			}
-		}
+		checkBoundary(1, 1);
 
 		// 누적합으로 건물 칸 세기
 		for (int i = 1; i <= n; i++) {
