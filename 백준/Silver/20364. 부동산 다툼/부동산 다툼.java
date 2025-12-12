@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -15,7 +13,7 @@ public class Main {
 		int n = Integer.parseInt(st.nextToken());
 		int q = Integer.parseInt(st.nextToken());
 
-		Set<Integer> occupied = new HashSet<>();
+		boolean[] occupied = new boolean[n + 1];
 
 		int x, p;
 		int now;
@@ -27,7 +25,7 @@ public class Main {
 			p = 0;
 
 			while (now > 0) {
-				if (occupied.contains(now)) {
+				if (occupied[now]) {
 					p = now;
 				}
 				now >>= 1;
@@ -36,7 +34,7 @@ public class Main {
 			sb.append(p).append("\n");
 
 			if (p == 0) {
-				occupied.add(x);
+				occupied[x] = true;
 			}
 		}
 
