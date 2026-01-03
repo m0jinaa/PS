@@ -77,7 +77,7 @@ public class Main {
 		b = Integer.parseInt(br.readLine());
 
 		int s = 1;
-		int e = 200_000_000;
+		int e = bombs[n - 1].x - bombs[0].x;
 
 		int mid;
 
