@@ -1,15 +1,19 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
 	static int n, m;
 	static int[][] board;
+	static int[] dp;
 
 	static int getMax(int used, int t) {
 		if (t == n * m)
 			return 0;
-		else if ((used & (1 << t)) != 0)
+		else if (dp[used] != -1) {
+			return dp[used];
+		} else if ((used & (1 << t)) != 0)
 			return getMax(used, t + 1);
 		else {
 			int v = 0;
@@ -39,7 +43,7 @@ public class Main {
 				max = Math.max(max, getMax(nu, t + 1) + v);
 			}
 
-			return max;
+			return dp[used] = max;
 		}
 	}
 
@@ -53,8 +57,11 @@ public class Main {
 		m = Integer.parseInt(st.nextToken());
 
 		board = new int[n][m];
+		dp = new int[1 << (n * m)];
+		Arrays.fill(dp, -1);
 
 		char[] row;
+
 		for (int i = 0; i < n; i++) {
 			row = br.readLine().toCharArray();
 
