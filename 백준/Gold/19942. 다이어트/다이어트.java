@@ -21,26 +21,43 @@ public class Main {
 	static Ingredient[] ingredients;
 	static int minCost = INF;
 	static String answer = "-1";
+	static boolean[] used;
 
-	static void getCombi(int ind, int p, int f, int s, int v, int c, String combi) {
-
+	static void getCombi(int ind, int p, int f, int s, int v, int c) {
+		// 최소영양조건 체크
 		if (p >= mp && f >= mf && s >= ms && v >= mv) {
+			// 비용 비교
 			if (c < minCost) {
 				minCost = c;
-				answer = combi;
+
+				StringBuilder sbb = new StringBuilder();
+
+				for (int i = 0; i < n; i++) {
+					if (used[i]) {
+						if (sbb.length() != 0) {
+							sbb.append(" ");
+						}
+						sbb.append(i + 1);
+					}
+				}
+				answer = sbb.toString();
 			}
 		} else if (ind < n) {
+			// ind+1번 재료 사용
+			used[ind] = true;
 			getCombi(ind + 1, p + ingredients[ind].p, f + ingredients[ind].f, s + ingredients[ind].s,
-					v + ingredients[ind].v, c + ingredients[ind].c,
-					"".equals(combi) ? ("" + (ind + 1)) : (combi + " " + (ind + 1)));
-			getCombi(ind + 1, p, f, s, v, c, combi);
+					v + ingredients[ind].v, c + ingredients[ind].c);
+			used[ind] = false;
+
+			// ind+1번 재료 미사용
+			getCombi(ind + 1, p, f, s, v, c);
 		}
 	}
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
+		StringBuilder sb = new StringBuilder();
 
 		// 재료 수
 		n = Integer.parseInt(br.readLine());
@@ -70,8 +87,12 @@ public class Main {
 			ingredients[i] = new Ingredient(p, f, s, v, c);
 		}
 
-		getCombi(0, 0, 0, 0, 0, 0, "");
+		// 재료별 사용여부 체크용
+		used = new boolean[n];
 
+		getCombi(0, 0, 0, 0, 0, 0);
+
+		// 조건 미충족 체크
 		if (minCost == INF) {
 			sb.append(-1).append("\n");
 		} else {
