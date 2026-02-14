@@ -5,7 +5,10 @@ import java.util.StringTokenizer;
 public class Main {
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
+
+		final int INF = 1_000_000_007;
 
 		st = new StringTokenizer(br.readLine(), " ");
 
@@ -15,50 +18,53 @@ public class Main {
 		st = new StringTokenizer(br.readLine(), " ");
 
 		int n = Integer.parseInt(st.nextToken());
-		int y = Integer.parseInt(st.nextToken());
+		int d = Integer.parseInt(st.nextToken());
 
-		int[] a = new int[n];
-
-		st = new StringTokenizer(br.readLine(), " ");
-
-		for (int i = 0; i < n; i++) {
-			a[i] = Integer.parseInt(st.nextToken());
-		}
-
-		int[] p = new int[n + 1];
+		int[] A = new int[n + 1];
 
 		st = new StringTokenizer(br.readLine(), " ");
 
-		for (int i = 0; i < n; i++) {
-			p[i] = Integer.parseInt(st.nextToken());
-		}
-		p[n] = p[n - 1];
-
-		// y까지 도달하기
-		int i;
-		int cost = 0;
-		int j = 0;
-		int now = 0;
-
-		for (i = 0; i < n; i++) {
-			if (now >= y)
-				break;
-			cost += (Math.min(y, a[i]) - now) * p[i];
-			j = i;
-			now = a[i];
+		for (int i = 1; i <= n; i++) {
+			A[i] = Integer.parseInt(st.nextToken());
 		}
 
-		int answer = cost + p[j] * w;
+		int[] P = new int[n + 1];
 
-		int s = y;
-		int upCost = 0;
-		int c;
-		for (; j < n; j++) {
-			upCost += ((a[j] - s) * p[j]);
-			c = cost + upCost * 2 + p[j + 1] * w;
-			answer = Math.min(answer, c);
+		st = new StringTokenizer(br.readLine(), " ");
+
+		for (int i = 1; i <= n; i++) {
+			P[i] = Integer.parseInt(st.nextToken());
+		}
+		P[0] = P[1];
+
+		int left = 0, cross = 0, right = 0;
+
+		int lane = 1;
+
+		// d 위치까지 올라가기
+		while (A[lane] < d) {
+			left += (A[lane] - A[lane - 1]) * P[lane];
+			lane++;
+		}
+
+		int answer = left + (d - A[lane - 1]) * P[lane] + w * P[lane];
+
+		left += (A[lane] - A[lane - 1]) * P[lane];
+
+		lane++;
+
+		int sum;
+
+		for (; lane <= n; lane++) {
+			cross = P[lane] * w;
+			right += (Math.min(A[lane - 1] - d, A[lane - 1] - A[lane - 2]) * P[lane - 1]);
+			sum = left + cross + right;
+
+			answer = Math.min(answer, sum);
+			left += (A[lane] - A[lane - 1]) * P[lane];
 		}
 
 		System.out.println(answer);
+
 	}
 }
