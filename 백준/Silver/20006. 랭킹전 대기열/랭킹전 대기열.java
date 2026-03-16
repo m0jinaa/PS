@@ -34,12 +34,10 @@ public class Main {
 			super();
 			this.started = false;
 			this.players = new ArrayList<>();
-			this.players.add(p);
 			this.min = p.level - 10;
 			this.max = p.level + 10;
 
-			if (players.size() == m)
-				this.started = true;
+			this.addPlayer(p);
 		}
 
 		public void addPlayer(Player p) {
