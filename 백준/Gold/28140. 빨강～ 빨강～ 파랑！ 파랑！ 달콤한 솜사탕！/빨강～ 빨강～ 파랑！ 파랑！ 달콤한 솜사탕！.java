@@ -90,35 +90,30 @@ public class Main {
 			if (a == rInd || R[a] > r) {
 				possible = false;
 			} else {
-				a = R[a];
 
-				b = findR(0, rInd - 1, a + 1);
+				b = findR(a + 1, rInd - 1, R[a] + 1);
 
 				if (b == rInd || R[b] > r) {
 					possible = false;
 				} else {
-					b = R[b];
 
-					c = findB(0, bInd - 1, b + 1);
+					c = findB(0, bInd - 1, R[b] + 1);
 
 					if (c == bInd || B[c] > r) {
 						possible = false;
 					} else {
-						c = B[c];
 
-						d = findB(0, bInd - 1, c + 1);
+						d = findB(c + 1, bInd - 1, B[c] + 1);
 
 						if (d == bInd || B[d] > r) {
 							possible = false;
-						} else {
-							d = B[d];
 						}
 					}
 				}
 			}
 
 			if (possible) {
-				sb.append(a).append(" ").append(b).append(" ").append(c).append(" ").append(d).append("\n");
+				sb.append(R[a]).append(" ").append(R[b]).append(" ").append(B[c]).append(" ").append(B[d]).append("\n");
 			} else {
 				sb.append("-1\n");
 			}
