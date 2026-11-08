@@ -64,13 +64,13 @@ class Solution {
         melodyMap.put("D","c");
         melodyMap.put("D#","d");
         melodyMap.put("E","e");
-        melodyMap.put("F","g");
-        melodyMap.put("F#","h");
-        melodyMap.put("G","i");
-        melodyMap.put("G#","j");
-        melodyMap.put("A","k");
-        melodyMap.put("A#","l");
-        melodyMap.put("B","m");
+        melodyMap.put("F","f");
+        melodyMap.put("F#","g");
+        melodyMap.put("G","h");
+        melodyMap.put("G#","i");
+        melodyMap.put("A","j");
+        melodyMap.put("A#","k");
+        melodyMap.put("B","l");
         
         list = new LinkedList<>();
     }
